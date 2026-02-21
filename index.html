@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Velvet Cuts | Royal Mutton</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',sans-serif;background:#0d0d0d;color:#fff}
+header{background:linear-gradient(to right,#1a0000,#2b0000);padding:20px;text-align:center;border-bottom:2px solid #7a0019}
+header h1{font-family:'Playfair Display',serif;font-size:32px;color:#b3002d;letter-spacing:2px}
+.products{padding:60px 20px;text-align:center}
+.products h2{font-family:'Playfair Display',serif;margin-bottom:40px;font-size:32px;color:#b3002d}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;max-width:1000px;margin:auto}
+.card{background:#1a0000;padding:20px;border-radius:8px;border:1px solid #7a0019}
+.price{margin:10px 0;font-weight:bold;color:#b3002d}
+select,input{padding:8px;margin:5px;width:90%;max-width:300px}
+.btn{display:inline-block;margin-top:10px;padding:10px 25px;background:#7a0019;color:#fff;text-decoration:none;border:none;border-radius:4px;cursor:pointer}
+.cart{padding:40px 20px;text-align:center;border-top:2px solid #7a0019}
+.success{display:none;margin-top:20px;color:#00ff99;font-weight:bold}
+footer{text-align:center;padding:20px;background:#1a0000;border-top:2px solid #7a0019;margin-top:40px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>VELVET CUTS</h1>
+</header>
+
+<section class="products">
+<h2>Royal Premium Selection</h2>
+<div class="product-grid">
+
+<div class="card">
+<h3>Premium Mutton Curry Cut</h3>
+<p class="price">₹799 / kg</p>
+<select id="qty1">
+<option value="0.5">500g</option>
+<option value="1">1 kg</option>
+</select><br>
+<button class="btn" onclick="addToCart('Premium Mutton Curry Cut',799,'qty1')">Add</button>
+</div>
+
+<div class="card">
+<h3>Royal Mutton Chops</h3>
+<p class="price">₹899 / kg</p>
+<select id="qty2">
+<option value="0.5">500g</option>
+<option value="1">1 kg</option>
+</select><br>
+<button class="btn" onclick="addToCart('Royal Mutton Chops',899,'qty2')">Add</button>
+</div>
+
+<div class="card">
+<h3>Fresh Mutton Keema</h3>
+<p class="price">₹849 / kg</p>
+<select id="qty3">
+<option value="0.5">500g</option>
+<option value="1">1 kg</option>
+</select><br>
+<button class="btn" onclick="addToCart('Fresh Mutton Keema',849,'qty3')">Add</button>
+</div>
+
+</div>
+</section>
+
+<section class="cart">
+<h2>Your Order</h2>
+<p id="cartItems">No items added</p>
+<p>Delivery: ₹<span id="delivery">0</span></p>
+<h3>Total: ₹<span id="total">0</span></h3>
+
+<input type="text" id="name" placeholder="Your Name"><br>
+<input type="text" id="address" placeholder="Delivery Address"><br>
+
+<button class="btn" onclick="payUPI()">Pay via UPI</button>
+<button class="btn" onclick="confirmWhatsApp()">Confirm on WhatsApp</button>
+
+<p class="success" id="successMsg">Order Sent Successfully! We will confirm shortly.</p>
+</section>
+
+<footer>
+<p>© 2026 Velvet Cuts | Royal Meat Experience</p>
+</footer>
+
+<script>
+let cart=[];
+let total=0;
+let deliveryCharge=0;
+
+function addToCart(item,price,qtyId){
+let qty=document.getElementById(qtyId).value;
+let itemTotal=price*qty;
+cart.push(item+" ("+qty+"kg)");
+total+=itemTotal;
+
+deliveryCharge = total >= 1000 ? 0 : 99;
+
+document.getElementById("cartItems").innerText=cart.join(", ");
+document.getElementById("delivery").innerText=deliveryCharge;
+document.getElementById("total").innerText=total+deliveryCharge;
+}
+
+function payUPI(){
+let finalAmount=total+deliveryCharge;
+let upi="upi://pay?pa=jahangirsohail5591@okicici&pn=Velvet%20Cuts&am="+finalAmount+"&cu=INR";
+window.location.href=upi;
+}
+
+function confirmWhatsApp(){
+let finalAmount=total+deliveryCharge;
+let name=document.getElementById("name").value;
+let address=document.getElementById("address").value;
+
+let message=`Hello Velvet Cuts,%0AI have paid ₹${finalAmount} via UPI.%0AOrder: ${cart.join(", ")}%0AName: ${name}%0AAddress: ${address}%0APlease confirm.`;
+
+let whatsapp="https://wa.me/919392086027?text="+message;
+window.open(whatsapp,"_blank");
+
+document.getElementById("successMsg").style.display="block";
+}
+</script>
+
+</body>
+</html>
